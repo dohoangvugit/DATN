@@ -15,13 +15,14 @@ const taskModel = {
                 }
             ])
             .select()
+            .single()
 
         if (error) {
             console.error('thêm thất bại', error.message)
-            throw error
+            // throw error
         }
-        console.log('thêm thành công', data)
-        return data
+        // console.log('thêm thành công', data)
+        return {data, error}
     },
 
     get: async () => {
@@ -51,10 +52,10 @@ const taskModel = {
         
         if (error) {
             console.error('cập nhật thất bại', error.message)
-            throw error
+            // throw error
         }
         // console.log('cập nhật thành công', data)
-        return data
+        return {data, error}
     },
 
     delete: async (taskId) => {
@@ -66,7 +67,7 @@ const taskModel = {
 
         if (error) {
             console.error('xóa thất bại', error.message)
-            throw error
+            // throw error
         }
         // console.log('xóa thành công', data)
         return {data, error}
