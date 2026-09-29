@@ -1,0 +1,99 @@
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <title>MATIC FAUCET</title>
+    <link rel="stylesheet" href="/css/client.css">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg px-4">
+            <div class="container-fluid">
+                <a class="navbar-brand d-flex align-items-center" href="/">
+                    <img src="/img/logo.png" alt="Logo" width="68" height="68">
+                </a>
+
+                <div class="ms-auto">
+                    <a href="/logout" class="btn btn-outline-danger d-flex align-items-center" id="logout-btn">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span class="ms-2">Logout</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="container mt-5">
+            <div class="row">
+
+                <div class="col-xl-3 col-lg-4 col-md-5">
+                    <div id="sidebar-block" class="box-shadow box-style mt-3 text-white p-3">
+                        <div class="user mb-3">
+                            <div class="info">
+                                <span class="fw-bold">{{username.username}}</span><br>
+                            </div>
+                        </div>
+
+                        <div class="inner mb-3">
+                            <div class="block">
+                                <div class="data">
+                                    <div class="align-items-center">
+                                        <div class="col-12">
+                                            Balance
+                                            <div class="fw-bold" id="balance">{{balance.balance}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <a href="/withdraw" class="btn btn-success btn-sm w-100 mt-3">
+                                Withdraw
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-9 col-lg-8 col-md-7">
+                    <div class="row">
+
+                        {{#each tasks}}
+                        <div class="col-sm-6 col-lg-4 mb-4">
+                            <div class="card h-100 shadow-sm position-relative">
+                                
+                                <div class="card-header bg-light fw-bold text-center">
+                                    {{title}} 
+                                </div>
+
+                                <div class="card-body position-relative text-center" style="min-height:100px;">
+                                    <div>
+                                        {{description}}
+                                    </div>
+                                </div>
+
+                                <div class="card-footer d-flex justify-content-between align-items-center">
+                                    <span><i class="bi bi-coin"></i> {{reward}}</span>
+                                    <span><i class="bi bi-alarm-fill"></i> {{cooldown}}s</span>
+                                </div>
+
+                                <button
+                                class="btn btn-success btn-sm w-100 mt-1 visit-btn"
+                                data-task-id="{{id}}"
+                                data-link-url="{{url}}"
+                                data-cooldown="{{cooldown}}">
+                                Visit
+                                </button>
+                            </div>            
+                        </div>
+                        {{/each}}
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="/js/logout.js"></script>
+</body>
+</html>
