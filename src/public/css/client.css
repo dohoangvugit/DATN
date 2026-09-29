@@ -1,0 +1,389 @@
+@charset "UTF-8";
+body {
+  min-height: 100vh;
+  background: #0f172a;
+  font-family: "Segoe UI", sans-serif;
+  color: #fff;
+}
+
+.bg-hero {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: url("/img/bg.png") center/cover no-repeat;
+  z-index: -1;
+}
+.bg-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.8), rgba(59, 130, 246, 0.3));
+}
+
+.main-content {
+  position: relative;
+  z-index: 1;
+  margin-top: 20px;
+}
+
+.navbar {
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.navbar .navbar-brand img {
+  width: 68px;
+  height: 68px;
+  object-fit: contain;
+}
+.navbar .btn-outline-primary {
+  color: #60a5fa;
+  border-color: #60a5fa;
+}
+.navbar .btn-outline-primary:hover {
+  background: #60a5fa;
+  color: #0f172a;
+}
+.navbar .btn-primary {
+  background: #3b82f6;
+  border: none;
+}
+.navbar .btn-primary:hover {
+  background: #2563eb;
+}
+.navbar .btn-outline-danger {
+  color: #fca5a5;
+  border-color: #fca5a5;
+}
+.navbar .btn-outline-danger:hover {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: #fff;
+}
+
+.stat-wrapper {
+  position: absolute;
+  top: 120px;
+  left: 60px;
+  display: flex;
+  gap: 30px;
+}
+
+.stat-left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.stat-card {
+  width: 180px;
+  padding: 15px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+.stat-card .title {
+  font-size: 14px;
+  opacity: 0.8;
+}
+.stat-card .value {
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.intro-card {
+  width: 260px;
+}
+
+.intro-list {
+  margin-top: 10px;
+  padding-left: 18px;
+}
+.intro-list li {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.withdraw-container {
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
+
+.withdraw-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.withdraw-card:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.2);
+}
+
+.withdraw-header {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 30px 20px;
+}
+.withdraw-header h2 {
+  color: #fff;
+  font-weight: 600;
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.withdraw-header h2 i {
+  font-size: 32px;
+  color: #60a5fa;
+}
+
+.withdraw-body {
+  color: #fff;
+}
+
+.balance-info {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+.balance-info .info-label {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+.balance-info .balance-amount {
+  font-size: 28px;
+  font-weight: 700;
+  color: #60a5fa;
+}
+
+.withdraw-form .form-label {
+  color: #fff;
+  font-weight: 500;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.withdraw-form .form-label i {
+  color: #60a5fa;
+  font-size: 16px;
+}
+.withdraw-form .form-check-label {
+  color: rgba(255, 255, 255, 0.8);
+  margin-left: 8px;
+}
+.withdraw-form .form-check-label:hover {
+  color: #fff;
+}
+
+.withdraw-input {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff !important;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+.withdraw-input:focus {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #60a5fa;
+  color: #fff !important;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+}
+.withdraw-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+.withdraw-input:invalid {
+  border-color: #ef4444;
+}
+
+.form-control.is-invalid {
+  border-color: #ef4444 !important;
+}
+.form-control.is-invalid:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+.withdraw-addon {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-left: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+}
+
+.input-group .withdraw-input:focus ~ .withdraw-addon {
+  border-color: #60a5fa;
+  background: rgba(96, 165, 250, 0.08);
+  color: #60a5fa;
+}
+
+.fee-info {
+  background: rgba(139, 92, 246, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+}
+.fee-info .fee-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.fee-info .fee-row:last-child {
+  border-bottom: none;
+}
+.fee-info .fee-row.total {
+  color: #60a5fa;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 8px;
+}
+
+.form-check-input {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+}
+.form-check-input:checked {
+  background: #60a5fa;
+  border-color: #60a5fa;
+}
+.form-check-input:focus {
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+}
+
+.btn-withdraw {
+  background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  padding: 14px 32px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+.btn-withdraw i {
+  margin-right: 8px;
+}
+.btn-withdraw:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+  color: #fff;
+}
+.btn-withdraw:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.withdraw-footer {
+  background: rgba(15, 23, 42, 0.4);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.withdraw-footer .info-box {
+  background: rgba(59, 130, 246, 0.08);
+  border-left: 3px solid #60a5fa;
+  border-radius: 8px;
+  padding: 16px;
+}
+.withdraw-footer .info-box h6 {
+  color: #60a5fa;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.withdraw-footer .info-box h6 i {
+  font-size: 18px;
+}
+.withdraw-footer .info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+}
+.withdraw-footer .info-list li {
+  padding: 6px 0;
+  padding-left: 20px;
+  position: relative;
+}
+.withdraw-footer .info-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #60a5fa;
+  font-weight: bold;
+}
+
+.alert {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border-radius: 8px;
+}
+.alert.alert-info {
+  border-color: rgba(59, 130, 246, 0.3);
+  background: rgba(59, 130, 246, 0.1);
+}
+.alert.alert-success {
+  border-color: rgba(34, 197, 94, 0.3);
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+}
+.alert.alert-danger {
+  border-color: rgba(239, 68, 68, 0.3);
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+@media (max-width: 576px) {
+  .withdraw-header h2 {
+    font-size: 22px;
+  }
+  .withdraw-header h2 i {
+    font-size: 24px;
+  }
+  .balance-amount {
+    font-size: 24px;
+  }
+  .btn-withdraw,
+  .btn-secondary {
+    font-size: 14px;
+    padding: 12px 24px;
+  }
+  .d-grid.gap-2.d-sm-flex {
+    flex-direction: column;
+  }
+  .d-grid.gap-2.d-sm-flex .btn {
+    margin-bottom: 8px;
+  }
+  .d-grid.gap-2.d-sm-flex .btn:last-child {
+    margin-bottom: 0;
+  }
+}
+
