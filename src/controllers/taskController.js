@@ -1,5 +1,5 @@
 const taskModel = require('../models/taskModel')
-const {createdLog} = require('../models/managerHistoryTasks.Model')
+const {createdLog} = require('../models/managerHistoryTasksModel')
 
 const taskController = {
 
@@ -168,8 +168,7 @@ const taskController = {
                 }
             }
 
-            const {data: dataDeleteTask,error: errorDeleteTask} =
-                await taskModel.delete(taskId)
+            const {data: dataDeleteTask,error: errorDeleteTask} = await taskModel.delete(taskId)
 
             if(errorDeleteTask){
                 return res.status(400).json({

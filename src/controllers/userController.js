@@ -1,25 +1,48 @@
 const userModel = require('../models/userModel')
-const supabase = require('../config/db')
-
+const {createdLog} = require('../models/managerHistoryUserModel')
 const userController = {
 
     updateUserRole: async (req,res) =>{
         try{
+            const actor = req.user.email
             const id = req.params.id
             const updateRole = req.body.role
             const {data, error} = await userModel.updateUserRole(id, updateRole)
 
             if (error){
-                res.status(400).json({
+                return res.status(400).json({
                     message: 'lỗi update user role',
                     error: error.message
                 })
-            }else{
-                res.status(200).json({
-                    message: 'update user role success',
-                    role: data
+            }
+
+            const changes = {
+                new:{
+                    role: updateRole
+                }
+            }
+
+            const {data: dataUpdateUserRole, error: errorUpdateUserRole} = await createdLog(
+                actor,
+                'Sửa',
+                data.id,
+                data.username,
+                changes
+            )
+
+            if(errorUpdateUserRole){
+                return res.status(400).json({
+                    message: 'thêm vào log thất bại',
+                    error: errorUpdateUserRole.message
                 })
             }
+
+            res.status(200).json({
+                    message: 'update user role success',
+                    dataUpdateUserRole,
+                    errorUpdateUserRole
+                })
+        
 
         }catch(error){
             res.status(500).json({
@@ -54,6 +77,7 @@ const userController = {
 
     deleteUser: async (req,res) =>{
         try{
+            const actor = req.user.email
             const id = req.params.id
             const role = req.user.role
             
@@ -64,18 +88,17 @@ const userController = {
                 })
             }
 
-            const { data: user, error: getUserError } = await supabase
-            .from('users')
-            .select('role')
-            .eq('id', id)
-            .single()
+            const {data: userAll, error: errorGetAllUser} = await userModel.getAllUsers()
 
-            if (getUserError) {
+            if(errorGetAllUser){
                 return res.status(400).json({
-                    message: 'Không tìm thấy user',
-                    error: getUserError.message
+                    message: 'không tìm thấy user',
+                    error: errorGetAllUser.message
                 })
             }
+
+            const user = userAll.find(user => user.id == id)
+
 
             if (role === 'Admin' && user.role === 'Superadmin') {
                 return res.status(403).json({
@@ -83,17 +106,47 @@ const userController = {
                     error: 'Không có quyền xóa Superadmin'
                 })
             }
-            
+
+            const changes = {
+                old: {
+                    username: user.username,
+                    email: user.email,
+                    balance: user.balance,
+                    role: user.role,
+                }
+            }
+
             const {data, error} = await userModel.delete(id)
 
             if(error){
-                res.status(400).json({
-                    message: 'xóa thất bại',
+                return res.status(400).json({
+                    message: 'xóa user thất bại',
                     error: error.message
                 })
-            }else{
-                res.status(200).json(data)
             }
+
+            const {data: dataDeleteLogs, error: errorDeleteLogs} = await createdLog(
+                actor,
+                'Xóa',
+                data.id,
+                data.username,
+                changes
+            )
+
+            if(errorDeleteLogs){
+                return res.status(400).json({
+                    message: 'thêm vào log thất bại',
+                    error: errorDeleteLogs.message
+                })
+            }
+
+            res.status(200).json({
+                message: 'xóa user thành công',
+                dataDeleteLogs,
+                data
+            })
+
+
         }catch(error){
             res.status(500).json({
                 message: 'lỗi server',
