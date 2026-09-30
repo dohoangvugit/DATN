@@ -22,6 +22,19 @@ const managerHistoryTasks = {
             }
 
         return {data, error}
+    },
+
+    getAllTaskLogs: async() =>{
+        const { data, error } = await supabase
+            .from('admin_task_logs')
+            .select('*')
+
+        if(error || !data){
+            console.error('error: ', error)
+            // throw error
+        }
+
+        return {data, error}
     }
 }
 
