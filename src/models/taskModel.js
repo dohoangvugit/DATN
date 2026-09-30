@@ -49,6 +49,7 @@ const taskModel = {
             })
             .eq('id', taskId)
             .select()
+            .single()
         
         if (error) {
             console.error('cập nhật thất bại', error.message)
