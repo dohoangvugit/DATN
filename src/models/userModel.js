@@ -8,6 +8,7 @@ const userModel = {
             .update({ role })
             .eq('id', id)
             .select()
+            .single()
         if (error) {
             console.error('cập nhật thất bại', error.message)
             // throw error
@@ -23,6 +24,7 @@ const userModel = {
             .delete()
             .eq('id', id)
             .select()
+            .single()
 
             if(error){
                 console.log( 'xóa thất bại')
@@ -40,7 +42,7 @@ const userModel = {
 
             if (error){
                 console.log('lấy danh sách thất bại')
-                throw error
+                // throw error
             }
 
             // console.log('lấy danh sách thành công', data)
