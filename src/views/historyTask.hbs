@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Lịch sử quản lý nhiệm vụ</title>
+
+    <link rel="stylesheet" href="/css/adminmanager.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+        crossorigin="anonymous">
+</head>
+
+<body>
+
+<div class="container text-center mt-4">
+
+    <div class="row align-items-start">
+
+        <div class="col-2">
+
+            <h1>Admin</h1>
+
+            <ul class="nav flex-column">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/manager/users">
+                        Quản lý người dùng
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/manager/tasks">
+                        Quản lý nhiệm vụ
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout" id="logout-btn">
+                        Đăng xuất
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <div class="col-10 text-start">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                <h2>Lịch sử quản lý nhiệm vụ</h2>
+
+                <a href="/manager/tasks" class="btn btn-secondary">
+                    Quay lại
+                </a>
+
+            </div>
+
+
+            <table class="table table-striped align-middle">
+
+                <thead>
+
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Người thực hiện</th>
+                        <th scope="col">Hành động</th>
+                        <th scope="col">Task ID</th>
+                        <th scope="col">Tiêu đề</th>
+                        <th scope="col">Thay đổi</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {{#each logs}}
+
+                    <tr>
+
+                        <th scope="row">
+                            {{id}}
+                        </th>
+
+                        <td>
+                            {{actor}}
+                        </td>
+
+                        <td>
+
+                            {{#if (eq action "Thêm")}}
+
+                                <span class="badge text-bg-success">
+                                    Thêm
+                                </span>
+
+                            {{else if (eq action "Sửa")}}
+
+                                <span class="badge text-bg-primary">
+                                    Sửa
+                                </span>
+
+                            {{else if (eq action "Xóa")}}
+
+                                <span class="badge text-bg-danger">
+                                    Xóa
+                                </span>
+
+                            {{else}}
+
+                                <span class="badge text-bg-secondary">
+                                    {{action}}
+                                </span>
+
+                            {{/if}}
+
+                        </td>
+
+                        <td>
+                            {{task_id}}
+                        </td>
+
+                        <td>
+                            {{task_title}}
+                        </td>
+
+                        <td>
+
+                            <details>
+
+                                <summary class="text-primary"
+                                    style="cursor: pointer;">
+                                    Xem thay đổi
+                                </summary>
+
+
+                                <div class="mt-2 p-3 border rounded bg-light">
+
+                                    {{#if changes.new}}
+
+                                        <div class="mb-3">
+
+                                            <strong class="text-success">
+                                                Dữ liệu mới
+                                            </strong>
+
+                                            <div>
+                                                <strong>Tiêu đề:</strong>
+                                                {{changes.new.title}}
+                                            </div>
+
+                                            <div>
+                                                <strong>Mô tả:</strong>
+                                                {{changes.new.description}}
+                                            </div>
+
+                                            <div>
+                                                <strong>Reward:</strong>
+                                                {{changes.new.reward}}
+                                            </div>
+
+                                            <div>
+                                                <strong>Cooldown:</strong>
+                                                {{changes.new.cooldown}}
+                                            </div>
+
+                                            <div class="text-break">
+                                                <strong>URL:</strong>
+                                                {{changes.new.url}}
+                                            </div>
+
+                                        </div>
+
+                                    {{/if}}
+
+
+                                    {{#if changes.old}}
+
+                                        <div>
+
+                                            <strong class="text-danger">
+                                                Dữ liệu cũ
+                                            </strong>
+
+                                            <div>
+                                                <strong>Tiêu đề:</strong>
+                                                {{changes.old.title}}
+                                            </div>
+
+                                            <div>
+                                                <strong>Mô tả:</strong>
+                                                {{changes.old.description}}
+                                            </div>
+
+                                            <div>
+                                                <strong>Reward:</strong>
+                                                {{changes.old.reward}}
+                                            </div>
+
+                                            <div>
+                                                <strong>Cooldown:</strong>
+                                                {{changes.old.cooldown}}
+                                            </div>
+
+                                            <div class="text-break">
+                                                <strong>URL:</strong>
+                                                {{changes.old.url}}
+                                            </div>
+
+                                        </div>
+
+                                    {{/if}}
+
+                                </div>
+
+                            </details>
+
+                        </td>
+
+                    </tr>
+
+                    {{else}}
+
+                    <tr>
+
+                        <td colspan="7" class="text-center">
+                            Chưa có lịch sử quản lý nhiệm vụ.
+                        </td>
+
+                    </tr>
+
+                    {{/each}}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous">
+</script>
+
+<script src="/js/logout.js"></script>
+
+</body>
+
+</html>

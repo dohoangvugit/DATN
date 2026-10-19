@@ -1,0 +1,148 @@
+/* Thiết lập chung */
+body {
+    background-color: #f4f6f9;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 260px;
+    background-color: #ffffff;
+    border-right: 1px solid #e3e6f0;
+    padding-top: 20px;
+    z-index: 100;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+}
+
+.sidebar .side-link {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: #6c757d;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+
+.sidebar .side-link i {
+    font-size: 1.2rem;
+    margin-right: 12px;
+}
+
+.sidebar .side-link:hover {
+    color: #4e73df;
+    background-color: #f8f9fc;
+    text-decoration: none;
+}
+
+.sidebar .side-link.active {
+    color: #4e73df;
+    background-color: #f8f9fc;
+    border-left: 4px solid #4e73df;
+    font-weight: 600;
+}
+
+/* Main Content Styling */
+.main {
+    margin-left: 260px; /* Bằng chiều rộng của sidebar */
+    padding: 30px;
+    min-height: 100vh;
+}
+
+.content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Stat Card Styling */
+.stat-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.05);
+    border: 1px solid #e3e6f0;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0.5rem 1.5rem rgba(58, 59, 69, 0.1);
+}
+
+.stat-card .stat-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    background-color: #e8f4fd;
+    color: #007bff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.25rem;
+}
+
+.stat-card .stat-icon.blue {
+    background-color: #e8f4fd;
+    color: #4e73df;
+}
+
+.stat-card .stat-label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #858796;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.stat-card .stat-number {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #5a5c69;
+    margin-bottom: 4px;
+}
+
+.stat-card .sub-title {
+    font-size: 0.8rem;
+    color: #858796;
+}
+
+/* Responsive cho thiết bị di động */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 70px;
+        padding-top: 10px;
+    }
+    .sidebar .side-link span {
+        display: none; /* Ẩn chữ trên mobile, chỉ hiện icon */
+    }
+    .sidebar .side-link {
+        justify-content: center;
+        padding: 15px 0;
+    }
+    .sidebar .side-link i {
+        margin-right: 0;
+        font-size: 1.4rem;
+    }
+    .sidebar .side-link.active {
+        border-left: none;
+        border-bottom: 4px solid #4e73df;
+    }
+    .main {
+        margin-left: 70px;
+        padding: 15px;
+    }
+}
