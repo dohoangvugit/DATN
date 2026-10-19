@@ -48,6 +48,25 @@ const authorize ={
             return res.status(500).json({message: 'lỗi server'})
         }
 
+    },
+    
+    advertiser: async (req, res, next) => {
+        try {
+            const role = await getRole(req.user.id)
+
+            if (role !== 'Advertiser') {
+                return res.status(403).json({
+                    message: 'Chỉ Advertiser mới có quyền này'
+                })
+            }
+
+            req.user.role = role
+            next()
+        } catch (error) {
+            return res.status(500).json({
+                message: 'Lỗi server'
+            })
+        }
     }
 }
 
