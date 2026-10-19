@@ -53,12 +53,20 @@ const authController = {
                     })
                 }
 
-                if( dataRole.role ==='Admin' || dataRole.role === 'Superadmin'){
-                    res.redirect('/manager/users')
+                if (dataRole.role === 'Admin' || dataRole.role === 'Superadmin') {
+                    return res.status(200).json({
+                        message: 'đăng nhập thành công',
+                        token
+                    })
                 }
-                
-                res.redirect('/tasks')
-                
+
+                if (dataRole.role === 'Advertiser') {
+                    return res.status(200).json({ message: 'đăng nhập thành công', token })
+                }
+
+                if (dataRole.role === 'Viewer') {
+                    return res.redirect('/tasks')
+                }
             }catch(error){
                 console.error(error)
                 return res.status(500).json({
