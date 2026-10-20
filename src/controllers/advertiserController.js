@@ -5,9 +5,9 @@ const advertiserController = {
 
     createDeposit: async (req, res) => {
         try {
-            const {  amount, currency, network, tx_hash } = req.body
-            const id = req.params.id
-
+            const {  amount, currency, tx_hash } = req.body
+            const authId = req.user.id
+            console.log('id: ', authId)
 
             if(!amount || !currency || !tx_hash){
                 return res.status(400).json({ message: 'thiếu thông tin nạp tiền' })
@@ -19,16 +19,22 @@ const advertiserController = {
             }
 
             if(hashData){
-                return res.status(400).json({ message: 'Tx hash sai, vui lòng cung cấp đúng Tx hash bạn nạp' })
+                return res.status(400).json({ message: 'Tx hash đã được sử dụng, vui lòng cung cấp đúng Tx hash bạn nạp' })
             }
 
-           const verification = await verifyBlockchain({tx_hash, amount})
+            let verification
+            try{
+                verification = await verifyBlockchain({tx_hash, amount})
+            }catch(error){
+                return res.status(400).json({ message: 'lỗi xác minh giao dịch trên blockchain', error: error.message })
+            }
+
+            const actualAmount = verification.actualAmount
 
             const { data, error } = await advertiserModel.createDeposit({
-                user_id: id,
-                amount: verification.actualAmount,
+                user_uuid: authId,
+                amount: actualAmount,
                 currency,
-                status: verification.status,
                 tx_hash
             })
 
@@ -36,10 +42,15 @@ const advertiserController = {
                 return res.status(400).json({ message: 'nạp tiền thất bại' })
             }
 
-            if(verification.status === 'confirmed'){
-                await advertiserModel.addAdBalance(id, verification.actualAmount)
-                return res.status(200).json({ message: 'nạp tiền thành công', data })
+            const { error: balanceError } = await advertiserModel.addAdBalance(authId, actualAmount)
+            if (balanceError) {
+                return res.status(500).json({ message: 'Lỗi khi cập nhật số dư quảng cáo' })
             }
+
+            return res.status(200).json({ 
+                message: 'nạp tiền thành công', 
+                data
+            })
 
         } catch (error) {
             return res.status(500).json({

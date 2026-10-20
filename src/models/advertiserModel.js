@@ -6,10 +6,9 @@ const advertiserModel = {
             .from('deposits')
             .insert([
                 {
-                    user_id: deposit.user_id,
+                    user_uuid: deposit.user_uuid,
                     amount: deposit.amount,
                     currency: deposit.currency,
-                    status: deposit.status,
                     tx_hash: deposit.tx_hash
                 }
             ])
@@ -39,17 +38,19 @@ const advertiserModel = {
         return { data, error }
     },
 
-    addAdBalance: async (id, amount) => {
+    addAdBalance: async (authId, amount) => {
         const { data: dataAdBalance, error: errorAdBalance } = await supabase
             .from('users')
             .select('ad_balance')
-            .eq('id', id)
+            .eq('auth_user_id', authId)
             .single()
+
+        const adBalance = dataAdBalance.ad_balance + amount
 
         const { data, error } = await supabase
             .from('users')
-            .update({ ad_balance: dataAdBalance.ad_balance + amount })
-            .eq('id', id)
+            .update({ ad_balance: adBalance })
+            .eq('auth_user_id', authId)
             .select()
         if (error) {
             console.log('lỗi khi cập nhật số dư quảng cáo', error)
