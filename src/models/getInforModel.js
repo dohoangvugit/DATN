@@ -25,7 +25,7 @@ const getInforModel = {
             .single()
 
         if(error || !data){
-            console.error('error: ', error)
+            console.error('error: không tìm thấy người dùng ', error)
             // throw error
         }
 
@@ -45,6 +45,21 @@ const getInforModel = {
         }
 
         return {data, error}
+    },
+
+    getAdBalance: async (authId)=>{
+        const {data, error} = await supabase
+            .from('users')
+            .select('ad_balance')
+            .eq('auth_user_id', authId)
+            .single()
+
+        if(error || !data){
+            console.log('Không tìm thấy dữ liệu')
+            throw error
+        }
+        
+        return { data, error }
     }
 }
 
