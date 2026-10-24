@@ -6,7 +6,7 @@ async function verifyBlockchain({ tx_hash, amount }) {
     try {
         const superadminWallet = await wallet.getAddress()
 
-            console.log("Ví hệ thống (superadminWallet):", superadminWallet)
+            // console.log("Ví hệ thống (superadminWallet):", superadminWallet)
 
         const tx = await provider.getTransaction(tx_hash)
         if (!tx) {
@@ -23,15 +23,12 @@ async function verifyBlockchain({ tx_hash, amount }) {
         }
 
         if (tx.to.toLowerCase() !== superadminWallet.toLowerCase()) {
-            console.log("Ví nhận thực tế trong Tx (tx.to):", tx.to)
+            // console.log("Ví nhận thực tế trong Tx (tx.to):", tx.to)
 
             throw new Error('Nạp tiền thất bại, giao dịch không đến được tài khoản của chúng tôi')
         }
 
-        const actualAmount = parseFloat(ethers.formatEther(tx.value))
-        if (actualAmount < parseFloat(amount)) {
-            throw new Error('Số tiền thực tế bạn nạp không khớp với số tiền yêu cầu')
-        }
+        const actualAmount = Number(ethers.formatEther(tx.value))
 
         return { 
             success: true,
