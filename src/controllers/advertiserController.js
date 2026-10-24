@@ -1,15 +1,16 @@
 const advertiserModel = require('../models/advertiserModel')
 const verifyBlockchain = require('../helper/verifyBlockchain')
+const {getAdBalance} = require('../models/getInforModel')
 
 const advertiserController = {
 
     createDeposit: async (req, res) => {
         try {
-            const {  amount, currency, tx_hash } = req.body
+            const { currency, tx_hash } = req.body
             const authId = req.user.id
-            console.log('id: ', authId)
+            // console.log('id: ', authId)
 
-            if(!amount || !currency || !tx_hash){
+            if( !currency || !tx_hash){
                 return res.status(400).json({ message: 'thiếu thông tin nạp tiền' })
             }
 
@@ -24,7 +25,7 @@ const advertiserController = {
 
             let verification
             try{
-                verification = await verifyBlockchain({tx_hash, amount})
+                verification = await verifyBlockchain({tx_hash})
             }catch(error){
                 return res.status(400).json({ message: 'lỗi xác minh giao dịch trên blockchain', error: error.message })
             }
@@ -48,19 +49,45 @@ const advertiserController = {
             }
 
             return res.status(200).json({ 
-                message: 'nạp tiền thành công', 
+                message: 'nạp tiền thành công',
+                actualAmount,
+                currency,
                 data
             })
 
         } catch (error) {
-            return res.status(500).json({
-                        message: 'Lỗi server',
-                        error: error.message
-                    })
-                }
-            },
-    
-    
+            return res.status(500).json(
+                {
+                    message: 'Lỗi server',
+                    error: error.message
+                })
+            }
+        },
+
+    renderAdvertiserDashboard: async (req, res) => {
+        try{
+            const authId = req.user.id
+            const { data: dataAdBalance, error: errorAdBalance } = await getAdBalance(authId)
+
+            // console.log(dataAdBalance)
+            if(errorAdBalance){
+                return res.status(400).json({
+                    message: 'Lỗi lấy số dư',
+                    error: errorAdBalance.message
+                })
+            }
+
+            res.render('advertiser',{
+                dataAdBalance
+            })
+        }catch(err){
+
+        }
+    },
+
+    renderDeposit: (req,res) =>{
+        res.render('deposit')
+    }
 }
 
 module.exports = advertiserController
