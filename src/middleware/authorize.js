@@ -1,26 +1,11 @@
-const supabase = require('../config/db')
-
-const getRole = async (authUserId) => {
-    const { data , error } = await supabase
-        .from('users')
-        .select('role')
-        .eq('auth_user_id', authUserId)
-        .single()
-
-    if(error || !data) {
-        console.log(' không tìm thấy user')
-        throw error
-    }
-
-    return data.role
-}
+const {getRole} = require('../models/getInforModel')
 
 const authorize ={
 
     admin: async(req , res , next)=>{
         try{
-            const role = await getRole(req.user.id)
-
+            const result = await getRole(req.user.id)
+            const role = result.data.role
             if (role !== 'Admin' && role !== 'Superadmin') {
                 return res.status(403).json({message: 'chỉ admin mới có quyền này'})
             }
@@ -35,8 +20,8 @@ const authorize ={
 
     superadmin: async (req , res , next)=>{
         try{
-            const role = await getRole(req.user.id)
-
+            const result = await getRole(req.user.id)
+            const role = result.data.role
             if (role !== 'Superadmin') {
                 return res.status(403).json({message: 'chỉ superadmin mới có quyền này'})
             }
@@ -52,8 +37,8 @@ const authorize ={
     
     advertiser: async (req, res, next) => {
         try {
-            const role = await getRole(req.user.id)
-
+            const result = await getRole(req.user.id)
+            const role = result.data.role
             if (role !== 'Advertiser') {
                 return res.status(403).json({
                     message: 'Chỉ Advertiser mới có quyền này'
@@ -67,7 +52,24 @@ const authorize ={
                 message: 'Lỗi server'
             })
         }
+    },
+
+    viewer: async(req,res,next) =>{
+        try{
+            const result = await getRole(req.user.id)
+            const role = result.data.role
+            if(role !== 'Viewer'){
+                return res.status(403).json({
+                    message: 'Chỉ Viewer mới vào được trang này'
+                })
+            }
+
+            next()
+        }catch(err){
+            return res.status(500).json({
+                message: 'lỗi server'
+            })
+        }
     }
 }
-
 module.exports = authorize
