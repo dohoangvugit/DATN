@@ -1,27 +1,24 @@
-
+<!DOCTYPE html>
+<html lang="vi">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advertiser Dashboard - Matic Faucet</title>
     
-    <link rel="stylesheet" href="../public/css/advertiser.css">
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
+    <link rel="stylesheet" href="../css/advertiser.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body>
     <div class="sidebar">
-
-        <a href="advertiser.html" class="side-link active">
+        <a href="#" class="side-link active">
             <i class="bi bi-grid-1x2-fill"></i><span>Tổng quan</span>
         </a>
         <a href="#tasks" class="side-link">
             <i class="bi bi-megaphone"></i><span>Quản lý nhiệm vụ</span>
         </a>
-        <a href="deposit.html" class="side-link">
+        <a href="/deposit" class="side-link">
             <i class="bi bi-wallet2"></i><span>Nạp tiền</span>
         </a>
         <a href="#history" class="side-link">
@@ -39,15 +36,16 @@
                     <div class="stat-card">
                         <span class="stat-icon"><i class="bi bi-wallet2"></i></span>
                         <div class="stat-label">Số dư quảng cáo</div>
-                        <div class="stat-number">0.8900</div>
+                        <div class="stat-number">{{dataAdBalance.ad_balance}}</div>
                         <div class="sub-title">POL có thể sử dụng</div>
                     </div>
                 </div>
+
                 <div class="col-xl-6 col-sm-6">
                     <div class="stat-card">
                         <span class="stat-icon blue"><i class="bi bi-megaphone"></i></span>
                         <div class="stat-label">Tổng nhiệm vụ</div>
-                        <div class="stat-number">12</div>
+                        <div class="stat-number">{{totalTasks}}</div>
                         <div class="sub-title">Nhiệm vụ đã tạo</div>
                     </div>
                 </div>

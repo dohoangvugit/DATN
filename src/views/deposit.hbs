@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nạp tiền</title>
+
+    <link rel="stylesheet" href="../css/deposit.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <div class="sidebar">
+        <a href="/advertiser" class="side-link">
+            <i class="bi bi-grid-1x2-fill"></i>
+            <span>Tổng quan</span>
+        </a>
+
+        <a href="#tasks" class="side-link">
+            <i class="bi bi-megaphone"></i>
+            <span>Quản lý nhiệm vụ</span>
+        </a>
+
+        <a href="deposit.html" class="side-link active">
+            <i class="bi bi-wallet2"></i>
+            <span>Nạp tiền</span>
+        </a>
+
+        <a href="#history" class="side-link">
+            <i class="bi bi-clock-history"></i>
+            <span>Lịch sử giao dịch</span>
+        </a>
+
+        <a href="/logout" class="side-link">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Đăng xuất</span>
+        </a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+        <div class="content">
+            <div class="row">
+                <div class="col-xl-8 col-lg-9 col-md-12">
+                    <div class="stat-card deposit-card">
+
+                        <div class="deposit-header mb-4">
+                            <h4>
+                                <i class="bi bi-wallet2 mr-2"></i>
+                                Nạp tiền
+                            </h4>
+
+                            <p class="text-muted mb-0">
+                                Chuyển tiền vào ví hệ thống, sau đó nhập mã giao dịch
+                                để xác nhận nạp tiền.
+                            </p>
+                        </div>
+
+                        <!-- Ví nhận tiền -->
+                        <div class="form-group">
+                            <label class="deposit-label" for="systemMainWallet">
+                                Ví nhận tiền của hệ thống
+                            </label>
+
+                            <div class="input-group">
+                                <input type="text"
+                                       id="systemMainWallet"
+                                       class="form-control deposit-input"
+                                       readonly
+                                       value="{{systemMainWallet}}">
+                            </div>
+
+                            <small class="form-text text-muted">
+                                Chỉ gửi POL trên mạng Polygon đến địa chỉ này.
+                            </small>
+                        </div>
+
+                        <div class="network-notice mb-4">
+                            <i class="bi bi-shield-check mr-2"></i>
+                            <span>
+                                <strong>Lưu ý:</strong>
+                                Kiểm tra đúng mạng Polygon và địa chỉ ví trước khi gửi tiền.
+                            </span>
+                        </div>
+
+                        <hr>
+                        <form action="/deposit" method="POST">
+
+                            <div class="form-group">
+                                <label class="deposit-label" for="currency">Loại tiền</label>
+                                <select id="currency" name="currency" class="form-control deposit-input" required>
+                                    <option value="POL" selected>POL (Polygon)</option>
+                                    <option value="BTC">BTC (Bitcoin)</option>
+                                    <option value="ETH">ETH (Ethereum)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="deposit-label" for="txhash">
+                                    Mã giao dịch (TxHash)
+                                </label>
+
+                                <input type="text"
+                                    id="txhash"
+                                    class="form-control deposit-input"
+                                    name="tx_hash"
+                                    placeholder="Nhập mã giao dịch bắt đầu bằng 0x..."
+                                    required>
+
+                                <small class="form-text text-muted">
+                                    Hệ thống sẽ kiểm tra giao dịch trên blockchain
+                                    và tự xác định số lượng tiền đã chuyển.
+                                </small>
+                            </div>
+
+                            <button type="submit"
+                                    class="btn btn-primary btn-block deposit-submit">
+                                Đã gửi, xác nhận nạp tiền
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

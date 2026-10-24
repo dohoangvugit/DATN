@@ -1,0 +1,514 @@
+
+/* ========================================
+   DEPOSIT PAGE - MATIC FAUCET
+   CSS độc lập với advertiser.css
+======================================== */
+
+/* General */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f4f6f9;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+}
+
+/* Sidebar: đồng bộ Dashboard */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 260px;
+    background-color: #fff;
+    border-right: 1px solid #e3e6f0;
+    padding-top: 20px;
+    z-index: 100;
+    box-shadow: 0 0.15rem 1.75rem rgba(58, 59, 69, 0.1);
+}
+
+.sidebar .side-link {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: #6c757d;
+    text-decoration: none;
+    font-weight: 500;
+    border-left: 4px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.sidebar .side-link i {
+    width: 20px;
+    margin-right: 12px;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.sidebar .side-link:hover {
+    color: #4e73df;
+    background-color: #f8f9fc;
+    text-decoration: none;
+}
+
+.sidebar .side-link.active {
+    color: #4e73df;
+    background-color: #f8f9fc;
+    border-left-color: #4e73df;
+    font-weight: 600;
+}
+
+/* Main layout */
+.main {
+    margin-left: 260px;
+    padding: 30px;
+    min-height: 100vh;
+}
+
+.content {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Page heading */
+.page-heading {
+    margin-bottom: 24px;
+}
+
+.page-title {
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: #5a5c69;
+    margin: 0 0 6px;
+}
+
+.page-description {
+    font-size: 0.9rem;
+    color: #858796;
+    margin: 0;
+}
+
+/* Cards: cùng phong cách Dashboard */
+.stat-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 0.15rem 1.75rem rgba(58, 59, 69, 0.05);
+    border: 1px solid #e3e6f0;
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+    box-shadow: 0 0.5rem 1.5rem rgba(58, 59, 69, 0.1);
+}
+
+.stat-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    background-color: #e8f4fd;
+    color: #007bff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.25rem;
+}
+
+.stat-icon.blue {
+    background-color: #e8f4fd;
+    color: #4e73df;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #858796;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.stat-number {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #5a5c69;
+    margin-bottom: 4px;
+}
+
+.sub-title {
+    font-size: 0.8rem;
+    color: #858796;
+}
+
+/* Deposit header */
+.deposit-card {
+    min-height: 480px;
+}
+
+.deposit-header {
+    position: relative;
+    padding-right: 55px;
+}
+
+.deposit-header .stat-icon {
+    top: 0;
+    right: 0;
+}
+
+.deposit-title {
+    font-size: 1.8rem;
+    margin-bottom: 4px;
+}
+
+.deposit-divider {
+    border: 0;
+    border-top: 1px solid #e3e6f0;
+    margin: 24px 0;
+}
+
+.deposit-section-title {
+    color: #5a5c69;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 16px;
+}
+
+/* Tabs */
+.deposit-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #e3e6f0;
+}
+
+.deposit-tabs .nav-item {
+    margin: 0;
+}
+
+.deposit-tabs .nav-link {
+    color: #6c757d;
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 10px 14px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.deposit-tabs .nav-link:hover {
+    color: #4e73df;
+    background: #f1f4ff;
+}
+
+.deposit-tabs .nav-link.active {
+    background-color: #4e73df;
+    color: #fff;
+}
+
+/* Alert boxes */
+.deposit-alert,
+.manual-alert {
+    border: none;
+    border-radius: 7px;
+    padding: 14px 16px;
+    font-size: 0.88rem;
+    line-height: 1.7;
+}
+
+.deposit-alert {
+    color: #3566b8;
+    background-color: #e8f4fd;
+}
+
+.manual-alert {
+    color: #856404;
+    background-color: #fff5df;
+}
+
+/* Form */
+.deposit-label {
+    display: block;
+    color: #858796;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.35px;
+    text-transform: uppercase;
+    margin-bottom: 9px;
+}
+
+.deposit-input {
+    min-height: 44px;
+    border: 1px solid #dfe3eb;
+    border-radius: 6px;
+    color: #5a5c69;
+    font-size: 0.9rem;
+    box-shadow: none;
+}
+
+.deposit-input:focus {
+    border-color: #8ba5f4;
+    box-shadow: 0 0 0 0.15rem rgba(78, 115, 223, 0.12);
+}
+
+.deposit-input[readonly] {
+    background-color: #f8f9fc;
+}
+
+.copy-btn {
+    border-radius: 0 6px 6px 0;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.currency-label {
+    background-color: #f8f9fc;
+    border-color: #dfe3eb;
+    color: #4e73df;
+    font-weight: 700;
+}
+
+/* QR placeholder */
+.qr-wrapper {
+    text-align: center;
+    margin: 28px 0;
+}
+
+.qr-box {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 22px 30px;
+    background-color: #f8f9fc;
+    border: 1px solid #e3e6f0;
+    border-radius: 10px;
+    color: #4e73df;
+}
+
+.qr-box > i {
+    font-size: 5rem;
+    line-height: 1.2;
+}
+
+.qr-caption {
+    margin-top: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #6c757d;
+}
+
+.qr-description {
+    margin: 12px 0 0;
+    font-size: 0.82rem;
+    color: #858796;
+}
+
+/* Network notice */
+.network-notice {
+    display: flex;
+    align-items: flex-start;
+    padding: 13px 15px;
+    background-color: #f8f9fc;
+    border: 1px solid #e3e6f0;
+    border-radius: 7px;
+    color: #6c757d;
+    font-size: 0.83rem;
+    line-height: 1.6;
+}
+
+.network-notice i {
+    color: #4e73df;
+    font-size: 1rem;
+}
+
+/* System wallet */
+.system-wallet-box {
+    padding: 14px;
+    margin-bottom: 22px;
+    background-color: #f8f9fc;
+    border: 1px solid #e3e6f0;
+    border-radius: 7px;
+}
+
+.system-wallet-address {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    line-height: 1.7;
+}
+
+.system-wallet-address code {
+    color: #4e73df;
+    font-size: 0.85rem;
+}
+
+/* Submit button */
+.deposit-submit {
+    min-height: 46px;
+    margin-top: 10px;
+    border-radius: 6px;
+    background-color: #4e73df;
+    border-color: #4e73df;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.deposit-submit:hover {
+    background-color: #375ac3;
+    border-color: #375ac3;
+    transform: translateY(-1px);
+}
+
+/* Guide card */
+.guide-card {
+    height: calc(100% - 24px);
+}
+
+.guide-title {
+    font-size: 1.35rem;
+    margin-bottom: 24px;
+}
+
+.guide-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.guide-number {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #e8f4fd;
+    color: #4e73df;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.guide-item-title {
+    color: #5a5c69;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin: 3px 0 5px;
+}
+
+.guide-item p {
+    color: #858796;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.guide-footer {
+    padding: 12px;
+    background-color: #f8f9fc;
+    border-radius: 6px;
+    color: #6c757d;
+    font-size: 0.8rem;
+    line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 70px;
+        padding-top: 10px;
+    }
+
+    .sidebar .side-link {
+        justify-content: center;
+        padding: 15px 0;
+        border-left: none;
+    }
+
+    .sidebar .side-link span {
+        display: none;
+    }
+
+    .sidebar .side-link i {
+        width: auto;
+        margin-right: 0;
+        font-size: 1.4rem;
+    }
+
+    .sidebar .side-link.active {
+        border-bottom: 4px solid #4e73df;
+    }
+
+    .main {
+        margin-left: 70px;
+        padding: 18px 14px;
+    }
+
+    .page-heading {
+        margin-bottom: 20px;
+    }
+
+    .page-title {
+        font-size: 1.4rem;
+    }
+
+    .deposit-card {
+        min-height: auto;
+    }
+
+    .guide-card {
+        height: auto;
+    }
+
+    .guide-title {
+        padding-right: 45px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main {
+        padding: 14px 10px;
+    }
+
+    .stat-card {
+        padding: 18px;
+    }
+
+    .deposit-tabs {
+        gap: 6px;
+    }
+
+    .deposit-tabs .nav-link {
+        padding: 9px 8px;
+        font-size: 0.75rem;
+    }
+
+    .deposit-header {
+        padding-right: 45px;
+    }
+
+    .deposit-title {
+        font-size: 1.5rem;
+    }
+
+    .copy-btn {
+        padding: 8px;
+        font-size: 0.78rem;
+    }
+
+    .qr-box {
+        padding: 18px 24px;
+    }
+}
