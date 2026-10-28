@@ -92,6 +92,9 @@ const taskController = {
             const taskId = req.params.taskId
             const {title,description,reward,cooldown,url} = req.body
 
+            const {data: taskBeforeUpdate, error: errorGetTask} = await taskModel.getById(taskId)
+
+
             const {data: dataUpdateTask,error: errorUpdateTask} = await taskModel.update(taskId,{title,description,reward,cooldown,url})
 
             if(errorUpdateTask){
@@ -102,12 +105,19 @@ const taskController = {
             }
 
             const changes = {
+                old: {
+                    title: taskBeforeUpdate.title,
+                    description: taskBeforeUpdate.description,
+                    reward: taskBeforeUpdate.reward,
+                    cooldown: taskBeforeUpdate.cooldown,
+                    url: taskBeforeUpdate.url
+                },
                 new: {
-                    title,
-                    description,
-                    reward,
-                    cooldown,
-                    url
+                    title: dataUpdateTask.title,
+                    description: dataUpdateTask.description,
+                    reward: dataUpdateTask.reward,
+                    cooldown: dataUpdateTask.cooldown,
+                    url: dataUpdateTask.url
                 }
             }     
             

@@ -7,6 +7,8 @@ const userController = {
             const actor = req.user.email
             const id = req.params.id
             const updateRole = req.body.role
+            const allowedRoles = ['Viewer', 'Advertiser', 'Admin', 'Superadmin']
+            
             const {data, error} = await userModel.updateUserRole(id, updateRole)
 
             if (error){
@@ -17,8 +19,19 @@ const userController = {
             }
 
             const changes = {
-                new:{
-                    role: updateRole
+                old: {
+                    username: currentUser.username,
+                    email: currentUser.email,
+                    role: currentUser.role,
+                    balance: currentUser.balance,
+                    ad_balance: currentUser.ad_balance
+                },
+                new: {
+                    username: data.username,
+                    email: data.email,
+                    role: data.role,
+                    balance: data.balance,
+                    ad_balance: data.ad_balance
                 }
             }
 
@@ -37,15 +50,15 @@ const userController = {
                 })
             }
 
-            res.status(200).json({
-                    message: 'update user role success',
-                    dataUpdateUserRole,
-                    errorUpdateUserRole
-                })
+            return res.status(200).json({
+                message: 'Cập nhật vai trò thành công',
+                data: dataUpdateUserRole
+            })
         
 
         }catch(error){
-            res.status(500).json({
+            console.error('Lỗi cập nhật vai trò người dùng:', error)
+            return res.status(500).json({
                 message: 'lỗi server',
                 error: error.message
             })
@@ -57,18 +70,20 @@ const userController = {
             const {data, error} = await userModel.getAllUsers()
 
             if(error){
-                res.status(400).json({
+                return res.status(400).json({
                     message: 'lấy danh sách thất bại',
                     error: error.message
                 })
             }else{
-                res.render('adminManagerUsers', {
-                    people: data
+                return res.render('adminManagerUsers', {
+                    people: data,
+                    isSuperadmin: req.user.role === 'Superadmin'
                 })
             }
 
         }catch(error){
-            res.status(500).json({
+            console.error('Lỗi lấy danh sách người dùng:', error)
+            return res.status(500).json({
                 message: 'lỗi server',
                 error: error.message
             })
@@ -88,17 +103,14 @@ const userController = {
                 })
             }
 
-            const {data: userAll, error: errorGetAllUser} = await userModel.getAllUsers()
+            const {data: user, error: errorGetUser} = await userModel.getUserById(id)
 
-            if(errorGetAllUser){
-                return res.status(400).json({
+            if(errorGetUser || !user){
+                return res.status(404).json({
                     message: 'không tìm thấy user',
-                    error: errorGetAllUser.message
+                    error: errorGetUser?.message
                 })
             }
-
-            const user = userAll.find(user => user.id == id)
-
 
             if (role === 'Admin' && user.role === 'Superadmin') {
                 return res.status(403).json({
@@ -112,6 +124,7 @@ const userController = {
                     username: user.username,
                     email: user.email,
                     balance: user.balance,
+                    ad_balance: user.ad_balance,
                     role: user.role,
                 }
             }
@@ -140,15 +153,16 @@ const userController = {
                 })
             }
 
-            res.status(200).json({
+            return res.status(200).json({
                 message: 'xóa user thành công',
-                dataDeleteLogs,
-                data
+                data: dataDeleteLogs,
+                deletedUser: data
             })
 
 
         }catch(error){
-            res.status(500).json({
+            console.error('Lỗi xóa người dùng:', error)
+            return res.status(500).json({
                 message: 'lỗi server',
                 error: error.message
             })
