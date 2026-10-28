@@ -142,82 +142,32 @@
 
 
                                 <div class="mt-2 p-3 border rounded bg-light">
-
-                                    {{#if changes.new}}
-
-                                        <div class="mb-3">
-
-                                            <strong class="text-success">
-                                                Dữ liệu mới
-                                            </strong>
-
-                                            <div>
-                                                <strong>Tiêu đề:</strong>
-                                                {{changes.new.title}}
-                                            </div>
-
-                                            <div>
-                                                <strong>Mô tả:</strong>
-                                                {{changes.new.description}}
-                                            </div>
-
-                                            <div>
-                                                <strong>Reward:</strong>
-                                                {{changes.new.reward}}
-                                            </div>
-
-                                            <div>
-                                                <strong>Cooldown:</strong>
-                                                {{changes.new.cooldown}}
-                                            </div>
-
-                                            <div class="text-break">
-                                                <strong>URL:</strong>
-                                                {{changes.new.url}}
-                                            </div>
-
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <strong class="text-danger">Dữ liệu cũ</strong>
+                                            {{#if changes.old}}
+                                                <div><strong>Tiêu đề:</strong> {{changes.old.title}}</div>
+                                                <div><strong>Mô tả:</strong> {{changes.old.description}}</div>
+                                                <div><strong>Reward:</strong> {{changes.old.reward}}</div>
+                                                <div><strong>Cooldown:</strong> {{changes.old.cooldown}}</div>
+                                                <div class="text-break"><strong>URL:</strong> {{changes.old.url}}</div>
+                                            {{else}}
+                                                <div class="text-muted">Không có dữ liệu cũ.</div>
+                                            {{/if}}
                                         </div>
-
-                                    {{/if}}
-
-
-                                    {{#if changes.old}}
-
-                                        <div>
-
-                                            <strong class="text-danger">
-                                                Dữ liệu cũ
-                                            </strong>
-
-                                            <div>
-                                                <strong>Tiêu đề:</strong>
-                                                {{changes.old.title}}
-                                            </div>
-
-                                            <div>
-                                                <strong>Mô tả:</strong>
-                                                {{changes.old.description}}
-                                            </div>
-
-                                            <div>
-                                                <strong>Reward:</strong>
-                                                {{changes.old.reward}}
-                                            </div>
-
-                                            <div>
-                                                <strong>Cooldown:</strong>
-                                                {{changes.old.cooldown}}
-                                            </div>
-
-                                            <div class="text-break">
-                                                <strong>URL:</strong>
-                                                {{changes.old.url}}
-                                            </div>
-
+                                        <div class="col-md-6">
+                                            <strong class="text-success">Dữ liệu mới</strong>
+                                            {{#if changes.new}}
+                                                <div><strong>Tiêu đề:</strong> {{changes.new.title}}</div>
+                                                <div><strong>Mô tả:</strong> {{changes.new.description}}</div>
+                                                <div><strong>Reward:</strong> {{changes.new.reward}}</div>
+                                                <div><strong>Cooldown:</strong> {{changes.new.cooldown}}</div>
+                                                <div class="text-break"><strong>URL:</strong> {{changes.new.url}}</div>
+                                            {{else}}
+                                                <div class="text-muted">Không có dữ liệu mới.</div>
+                                            {{/if}}
                                         </div>
-
-                                    {{/if}}
-
+                                    </div>
                                 </div>
 
                             </details>
