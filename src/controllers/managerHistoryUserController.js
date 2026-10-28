@@ -1,10 +1,10 @@
-const {getAllTaskLogs} = require('../models/managerHistoryTasksModel')
+const {getAllUserLogs} = require('../models/managerHistoryUserModel')
 
-const managerHistoryTasksController = {
+const managerHistoryUserController = {
 
-    getAllTaskLogs: async(req,res) =>{
+    getAllUserLogs: async(req,res) =>{
         try{
-            const {data: logs, error: errorLogs} = await getAllTaskLogs()
+            const {data: logs, error: errorLogs} = await getAllUserLogs()
 
             if(errorLogs){
                 return res.status(400).json({
@@ -13,13 +13,13 @@ const managerHistoryTasksController = {
                 })
             }
 
-            res.render('historyUser',{
+            return res.render('historyUser',{
                 logs
             })
 
         }catch(error){
-            console.error('có lỗi',error)
-            res.status(500).json({
+            console.error('Lỗi lấy lịch sử người dùng:',error)
+            return res.status(500).json({
                 message: 'lỗi server',
                 error: error.message
             })
@@ -27,4 +27,4 @@ const managerHistoryTasksController = {
     }
 }
 
-module.exports = managerHistoryTasksController
+module.exports = managerHistoryUserController
