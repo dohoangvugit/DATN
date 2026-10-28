@@ -2,6 +2,20 @@ const supabase = require('../config/db')
 
 const userModel = {
 
+    getUserById: async (id) => {
+        const { data, error } = await supabase
+            .from('users')
+            .select('id, username, email, role, balance, ad_balance')
+            .eq('id', id)
+            .single()
+
+        if (error) {
+            console.error('không tìm thấy người dùng', error.message)
+        }
+
+        return {data, error}
+    },
+
     updateUserRole: async (id, role) => {
         const { data, error } =  await supabase
             .from('users')
@@ -13,7 +27,6 @@ const userModel = {
             console.error('cập nhật thất bại', error.message)
             // throw error
         }
-        console.log('cập nhật thành công', data)
         return {data, error}
     },
 

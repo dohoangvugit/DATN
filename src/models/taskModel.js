@@ -36,6 +36,19 @@ const taskModel = {
         }
         return {data, error}
     },
+
+    getById: async (taskId) => {
+        const { data, error } = await supabase
+            .from('tasks')
+            .select('*')
+            .eq('id', taskId)
+            .single()
+
+        if (error) {
+            console.error('không tìm thấy task', error.message)
+        }
+        return {data, error}
+    },
     
     update: async (taskId, taskData) => {
         const { data, error } = await supabase
