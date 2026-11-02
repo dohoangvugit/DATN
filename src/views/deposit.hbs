@@ -58,10 +58,7 @@
                             <!-- Chọn đồng tiền -->
                             <div class="coin-selection">
 
-                                <button
-                                    type="button"
-                                    class="coin-card active"
-                                    data-coin="POL">
+                                <div class="coin-card active">
 
                                     <img
                                         class="coin-logo"
@@ -75,25 +72,7 @@
                                     </span>
 
                                     <i class="bi bi-check-circle-fill coin-check"></i>
-                                </button>
-
-                                <button
-                                    type="button"
-                                    class="coin-card"
-                                    data-coin="ETH">
-
-                                    <img
-                                        class="coin-logo"
-                                        src="https://assets.coingecko.com/coins/images/279/large/ethereum.png"
-                                        alt="Ethereum">
-
-                                    <span class="coin-info">
-                                        <strong>ETH</strong>
-                                        <small>Ethereum</small>
-                                    </span>
-
-                                    <i class="bi bi-check-circle-fill coin-check"></i>
-                                </button>
+                                </div>
 
                             </div>
 
@@ -110,52 +89,6 @@
                                 <span class="network-badge" id="networkBadge">
                                     Polygon PoS
                                 </span>
-                            </div>
-
-                            <!-- Tỷ giá ETH/POL -->
-                            <div id="exchangePanel" class="exchange-panel" hidden>
-
-                                <div class="exchange-heading">
-                                    <i class="bi bi-arrow-left-right"></i>
-                                    Tỷ giá quy đổi ETH/POL
-                                </div>
-
-                                <div id="exchangeRateContent">
-                                    <div class="rate-placeholder">
-                                        <i class="bi bi-arrow-repeat"></i>
-                                        <span>
-                                            Chọn ETH để tải tỷ giá từ CoinGecko.
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div
-                                    class="exchange-price-details"
-                                    id="exchangePriceDetails"
-                                    hidden>
-
-                                    <div class="exchange-price-row">
-                                        <span>Giá ETH</span>
-                                        <strong id="ethUsdPrice">--</strong>
-                                    </div>
-
-                                    <div class="exchange-price-row">
-                                        <span>Giá POL</span>
-                                        <strong id="polUsdPrice">--</strong>
-                                    </div>
-
-                                    <div class="exchange-price-row">
-                                        <span>Cập nhật lúc</span>
-                                        <strong id="exchangeUpdatedAt">--</strong>
-                                    </div>
-                                </div>
-
-                                <small class="exchange-note">
-                                    Tỷ giá tham khảo từ
-                                    <a href="https://www.coingecko.com/en/api"
-                                       target="_blank"
-                                       rel="noopener noreferrer">CoinGecko</a>
-                                </small>
                             </div>
 
                             <!-- Form nạp tiền -->

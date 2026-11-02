@@ -14,6 +14,10 @@ const advertiserController = {
                 return res.status(400).json({ message: 'thiếu thông tin nạp tiền' })
             }
 
+            if (currency !== 'POL') {
+                return res.status(400).json({ message: 'Chỉ hỗ trợ nạp POL trên mạng Polygon' })
+            }
+
             const {data: hashData, error: hashError} = await advertiserModel.findHash(tx_hash)
             if(hashError){
                 return res.status(400).json({ message: 'lỗi khi tìm kiếm hash' })
