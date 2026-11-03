@@ -1,5 +1,5 @@
 const authModel = require('../models/authModel')
-const {getRole} = require('../models/getInforModel')
+const {getRoles} = require('../models/getInforModel')
 
 const authController = {
 
@@ -44,27 +44,27 @@ const authController = {
                     secure: false
                 })
 
-                const {data: dataRole, error: errorRole} = await getRole(data.user.id)
+                const {data: dataRole, error: errorRole} = await getRoles(data.user.id)
 
-                if(errorRole || !dataRole){
+                if(errorRole || !dataRole || !Array.isArray(dataRole.roles)){
                     return res.status(400).json({
                         message: 'không tìm thấy user',
-                        error: errorRole.message
+                        error: errorRole?.message
                     })
                 }
 
-                if (dataRole.role === 'Admin' || dataRole.role === 'Superadmin') {
+                if (dataRole.roles.includes('Admin') || dataRole.roles.includes('Superadmin')) {
                     return res.status(200).json({
                         message: 'đăng nhập thành công',
                         token
                     })
                 }
 
-                if (dataRole.role === 'Advertiser') {
+                if (dataRole.roles.includes('Advertiser')) {
                     return res.status(200).json({ message: 'đăng nhập thành công', token })
                 }
 
-                if (dataRole.role === 'Viewer') {
+                if (dataRole.roles.includes('Viewer')) {
                     return res.redirect('/tasks')
                 }
             }catch(error){

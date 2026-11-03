@@ -5,6 +5,7 @@ const authenticate = require('../middleware/authenticate')
 const authorize = require('../middleware/authorize')
 const advertiserController = require('../controllers/advertiserController')
 
+router.post('/enable-advertiser', authenticate, advertiserController.enableAdvertiser)
 router.post('/deposit', authenticate, authorize.advertiser, advertiserController.createDeposit)
 
 router.get('/advertiser', authenticate, authorize.advertiser, advertiserController.renderAdvertiserDashboard )

@@ -1,6 +1,27 @@
 const supabase = require('../config/db')
 
 const advertiserModel = {
+    getRoles: async (authId) => {
+        const { data, error } = await supabase
+            .from('users')
+            .select('roles')
+            .eq('auth_user_id', authId)
+            .single()
+
+        return { data, error }
+    },
+
+    updateRoles: async (authId, roles) => {
+        const { data, error } = await supabase
+            .from('users')
+            .update({ roles })
+            .eq('auth_user_id', authId)
+            .select('roles')
+            .single()
+
+        return { data, error }
+    },
+
     createDeposit: async (deposit) => {
         const { data, error } = await supabase
             .from('deposits')

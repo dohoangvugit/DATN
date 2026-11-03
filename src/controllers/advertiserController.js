@@ -4,6 +4,52 @@ const {getAdBalance} = require('../models/getInforModel')
 
 const advertiserController = {
 
+    enableAdvertiser: async (req, res) => {
+        try {
+            const authId = req.user.id
+            const { data, error } = await advertiserModel.getRoles(authId)
+
+            if (error || !data) {
+                return res.status(500).json({
+                    message: 'Không thể tìm thấy vai trò người dùng',
+                    error: error?.message
+                })
+            }
+
+            if (!Array.isArray(data.roles)) {
+                return res.status(500).json({
+                    message: 'Dữ liệu roles của người dùng không hợp lệ'
+                })
+            }
+
+            const roles = data.roles
+
+            if (!roles.includes('Advertiser')) {
+                const { error: updateError } = await advertiserModel.updateRoles(
+                    authId,
+                    [...roles, 'Advertiser']
+                )
+
+                if (updateError) {
+                    return res.status(500).json({
+                        message: 'Không thể cập nhật vai trò Advertiser',
+                        error: updateError.message
+                    })
+                }
+            }
+
+            return res.status(200).json({
+                message: 'Đã bật vai trò Advertiser',
+                redirectUrl: '/advertiser'
+            })
+        } catch (error) {
+            return res.status(500).json({
+                message: 'Lỗi server',
+                error: error.message
+            })
+        }
+    },
+
     createDeposit: async (req, res) => {
         try {
             const { currency, tx_hash } = req.body

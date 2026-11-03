@@ -17,10 +17,10 @@ const getInforModel = {
         return {data, error}
     },
 
-    getRole: async (authId) => {
+    getRoles: async (authId) => {
         const { data, error } = await supabase
             .from('users')
-            .select('role')
+            .select('roles')
             .eq('auth_user_id', authId)
             .single()
 
