@@ -61,15 +61,15 @@ const authorize ={
     viewer: async(req,res,next) =>{
         try{
             const result = await getRoles(req.user.id)
-            const roles = result.data.roles
-            if(!roles.includes('Viewer')){
+            const roles = result.data?.roles
+            if (!Array.isArray(roles) || (!roles.includes('Viewer') && !roles.includes('Advertiser'))) {
                 return res.status(403).json({
-                    message: 'Chỉ Viewer mới vào được trang này'
+                    message: 'Chỉ Viewer hoặc Advertiser mới vào được trang này'
                 })
             }
 
             req.user.roles = roles
-            req.user.role = 'Viewer'
+            req.user.role = roles.includes('Viewer') ? 'Viewer' : 'Advertiser'
             next()
         }catch(err){
             return res.status(500).json({

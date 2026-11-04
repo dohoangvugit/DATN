@@ -60,13 +60,13 @@ const authController = {
                     })
                 }
 
-                if (dataRole.roles.includes('Advertiser')) {
-                    return res.status(200).json({ message: 'đăng nhập thành công', token })
-                }
-
-                if (dataRole.roles.includes('Viewer')) {
+                if (dataRole.roles.includes('Viewer') || dataRole.roles.includes('Advertiser')) {
                     return res.redirect('/tasks')
                 }
+
+                return res.status(403).json({
+                    message: 'Tài khoản không có quyền truy cập trang client'
+                })
             }catch(error){
                 console.error(error)
                 return res.status(500).json({

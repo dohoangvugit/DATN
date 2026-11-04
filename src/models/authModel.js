@@ -22,6 +22,7 @@ const authModel = {
                     auth_user_id: dataAuth.user.id,
                     username: userData.username,
                     email: userData.email,
+                    roles: ['Viewer'],
                 }
             ])
             .select()
@@ -67,4 +68,3 @@ const authModel = {
 }
 
 module.exports = authModel
-
