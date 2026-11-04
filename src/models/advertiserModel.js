@@ -22,6 +22,44 @@ const advertiserModel = {
         return { data, error }
     },
 
+    getUserByAuthId: async (authId) => {
+        const { data, error } = await supabase
+            .from('users')
+            .select('id, ad_balance')
+            .eq('auth_user_id', authId)
+            .maybeSingle()
+
+        return { data, error }
+    },
+
+    updateAdBalance: async (authId, newBalance) => {
+        const { data, error } = await supabase
+            .from('users')
+            .update({ ad_balance: newBalance })
+            .eq('auth_user_id', authId)
+            .select()
+            .single()
+
+        return { data, error }
+    },
+
+    createTask: async (task) => {
+        const { data, error } = await supabase
+            .from('tasks')
+            .insert([{
+                title: task.title,
+                description: task.description,
+                url: task.url,
+                reward: task.reward,
+                quantity: task.quantity,
+                created_by: task.created_by
+            }])
+            .select()
+            .single()
+
+        return { data, error }
+    },
+
     createDeposit: async (deposit) => {
         const { data, error } = await supabase
             .from('deposits')

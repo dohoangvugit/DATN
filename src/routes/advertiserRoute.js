@@ -7,6 +7,7 @@ const advertiserController = require('../controllers/advertiserController')
 
 router.post('/enable-advertiser', authenticate, advertiserController.enableAdvertiser)
 router.post('/deposit', authenticate, authorize.advertiser, advertiserController.createDeposit)
+router.post('/advertiser/tasks', authenticate, authorize.advertiser, advertiserController.createTask)
 
 router.get('/advertiser', authenticate, authorize.advertiser, advertiserController.renderAdvertiserDashboard )
 router.get('/deposit', authenticate, authorize.advertiser, advertiserController.renderDeposit)
