@@ -37,7 +37,7 @@
                     <th scope="col">ID</th>
                     <th scope="col">Username</th>
                     <th scope="col">Email</th>
-                    <th scope="col">Role</th>
+                    <th scope="col">Roles</th>
                     <th scope="col">Balance</th>
                     <th scope="col">Ad_Balance</th>
                     <th scope="col">Action</th>
@@ -50,18 +50,20 @@
                     <td>{{username}}</td>
                     <td>{{email}}</td>
                     <td>
-                        {{role}}
+                        <span>{{#if rolesLabel}}{{rolesLabel}}{{else}}Chưa có role{{/if}}</span>
                         {{#if ../isSuperadmin}}
-                        <div class="input-group input-group-sm mt-2">
-                            <select class="form-select" data-role-select>
-                                <option value="{{role}}" selected>{{role}}</option>
-                                <option value="Viewer">Viewer</option>
-                                <option value="Advertiser">Advertiser</option>
-                                <option value="Admin">Admin</option>
-                                <option value="Superadmin">Superadmin</option>
-                            </select>
-                            <button type="button" class="btn btn-outline-success" data-update-role="{{id}}">Lưu</button>
-                        </div>
+                        <details class="mt-2">
+                            <summary class="text-primary" style="cursor: pointer;">Phân quyền</summary>
+                            <div class="border rounded p-2 mt-1">
+                                {{#each roleOptions}}
+                                <label class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="{{value}}" data-role-option {{#if selected}}checked{{/if}}>
+                                    <span class="form-check-label">{{value}}</span>
+                                </label>
+                                {{/each}}
+                                <button type="button" class="btn btn-sm btn-outline-success mt-2" data-update-roles="{{id}}">Lưu</button>
+                            </div>
+                        </details>
                         {{/if}}
                     </td>
                     <td>{{balance}}</td>

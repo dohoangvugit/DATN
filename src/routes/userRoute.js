@@ -4,7 +4,7 @@ const authorize = require('../middleware/authorize')
 const authenticate = require('../middleware/authenticate')
 const userController = require('../controllers/userController')
 
-router.put('/manager/users/:id',authenticate, authorize.superadmin, userController.updateUserRole)
+router.put('/manager/users/:id',authenticate, authorize.superadmin, userController.updateUserRoles)
 
 router.get('/manager/users',authenticate, authorize.admin, userController.getAllUsers)
 

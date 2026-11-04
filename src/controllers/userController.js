@@ -2,18 +2,35 @@ const userModel = require('../models/userModel')
 const {createdLog} = require('../models/managerHistoryUserModel')
 const userController = {
 
-    updateUserRole: async (req,res) =>{
+    updateUserRoles: async (req,res) =>{
         try{
             const actor = req.user.email
             const id = req.params.id
-            const updateRole = req.body.role
             const allowedRoles = ['Viewer', 'Advertiser', 'Admin', 'Superadmin']
-            
-            const {data, error} = await userModel.updateUserRole(id, updateRole)
+
+            if (!Array.isArray(req.body.roles) ||
+                req.body.roles.length === 0 ||
+                req.body.roles.some(role => !allowedRoles.includes(role))) {
+                return res.status(400).json({
+                    message: 'Vui lòng chọn ít nhất một role hợp lệ'
+                })
+            }
+
+            const roles = req.body.roles
+            const {data: currentUser, error: errorCurrentUser} = await userModel.getUserById(id)
+
+            if(errorCurrentUser || !currentUser){
+                return res.status(404).json({
+                    message: 'không tìm thấy user',
+                    error: errorCurrentUser?.message
+                })
+            }
+
+            const {data, error} = await userModel.updateUserRoles(id, roles)
 
             if (error){
                 return res.status(400).json({
-                    message: 'lỗi update user role',
+                    message: 'lỗi cập nhật roles',
                     error: error.message
                 })
             }
@@ -22,14 +39,14 @@ const userController = {
                 old: {
                     username: currentUser.username,
                     email: currentUser.email,
-                    role: currentUser.role,
+                    roles: currentUser.roles,
                     balance: currentUser.balance,
                     ad_balance: currentUser.ad_balance
                 },
                 new: {
                     username: data.username,
                     email: data.email,
-                    role: data.role,
+                    roles: data.roles,
                     balance: data.balance,
                     ad_balance: data.ad_balance
                 }
@@ -51,7 +68,7 @@ const userController = {
             }
 
             return res.status(200).json({
-                message: 'Cập nhật vai trò thành công',
+                message: 'Cập nhật roles thành công',
                 data: dataUpdateUserRole
             })
         
@@ -75,8 +92,22 @@ const userController = {
                     error: error.message
                 })
             }else{
+                const allowedRoles = ['Viewer', 'Advertiser', 'Admin', 'Superadmin']
+                const people = data.map(user => {
+                    const roles = Array.isArray(user.roles) ? user.roles : []
+
+                    return {
+                        ...user,
+                        rolesLabel: roles.join(', '),
+                        roleOptions: allowedRoles.map(role => ({
+                            value: role,
+                            selected: roles.includes(role)
+                        }))
+                    }
+                })
+
                 return res.render('adminManagerUsers', {
-                    people: data,
+                    people,
                     isSuperadmin: req.user.role === 'Superadmin'
                 })
             }
@@ -112,7 +143,7 @@ const userController = {
                 })
             }
 
-            if (role === 'Admin' && user.role === 'Superadmin') {
+            if (role === 'Admin' && Array.isArray(user.roles) && user.roles.includes('Superadmin')) {
                 return res.status(403).json({
                     message: 'Admin không được xóa Superadmin',
                     error: 'Không có quyền xóa Superadmin'
@@ -125,7 +156,7 @@ const userController = {
                     email: user.email,
                     balance: user.balance,
                     ad_balance: user.ad_balance,
-                    role: user.role,
+                    roles: user.roles,
                 }
             }
 

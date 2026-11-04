@@ -148,7 +148,7 @@
                                             {{#if changes.old}}
                                                 <div><strong>Tên người dùng:</strong> {{changes.old.username}}</div>
                                                 <div><strong>Email:</strong> {{changes.old.email}}</div>
-                                                <div><strong>Vai trò:</strong> {{changes.old.role}}</div>
+                                                <div><strong>Vai trò:</strong> {{#if changes.old.roles}}{{changes.old.roles}}{{else}}{{changes.old.role}}{{/if}}</div>
                                                 <div><strong>Số dư:</strong> {{changes.old.balance}}</div>
                                                 <div><strong>Số dư quảng cáo:</strong> {{changes.old.ad_balance}}</div>
                                             {{else}}
@@ -160,7 +160,7 @@
                                             {{#if changes.new}}
                                                 <div><strong>Tên người dùng:</strong> {{changes.new.username}}</div>
                                                 <div><strong>Email:</strong> {{changes.new.email}}</div>
-                                                <div><strong>Vai trò:</strong> {{changes.new.role}}</div>
+                                                <div><strong>Vai trò:</strong> {{#if changes.new.roles}}{{changes.new.roles}}{{else}}{{changes.new.role}}{{/if}}</div>
                                                 <div><strong>Số dư:</strong> {{changes.new.balance}}</div>
                                                 <div><strong>Số dư quảng cáo:</strong> {{changes.new.ad_balance}}</div>
                                             {{else}}

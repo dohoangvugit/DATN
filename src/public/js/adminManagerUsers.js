@@ -28,12 +28,13 @@ async function sendRequest(url, method, body) {
     return result
 }
 
-document.querySelectorAll('[data-update-role]').forEach(button => {
+document.querySelectorAll('[data-update-roles]').forEach(button => {
     button.addEventListener('click', async () => {
-        const role = button.closest('.input-group').querySelector('[data-role-select]').value
+        const roleOptions = button.closest('details').querySelectorAll('[data-role-option]:checked')
+        const roles = Array.from(roleOptions, option => option.value)
 
         try {
-            await sendRequest(`/manager/users/${button.dataset.updateRole}`, 'PUT', { role })
+            await sendRequest(`/manager/users/${button.dataset.updateRoles}`, 'PUT', { roles })
             window.location.reload()
         } catch (error) {
             showMessage(error.message, true)

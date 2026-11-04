@@ -5,7 +5,7 @@ const userModel = {
     getUserById: async (id) => {
         const { data, error } = await supabase
             .from('users')
-            .select('id, username, email, role, balance, ad_balance')
+            .select('id, username, email, roles, balance, ad_balance')
             .eq('id', id)
             .single()
 
@@ -16,10 +16,10 @@ const userModel = {
         return {data, error}
     },
 
-    updateUserRole: async (id, role) => {
+    updateUserRoles: async (id, roles) => {
         const { data, error } =  await supabase
             .from('users')
-            .update({ role })
+            .update({ roles })
             .eq('id', id)
             .select()
             .single()
