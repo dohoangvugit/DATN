@@ -1,15 +1,147 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Rút tiền | MATIC FAUCET</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/client.css">
 </head>
 <body>
-    
-    <form action=""> Rút tiền </form>
-    <input type="text" name="amount" placeholder="Số tiền">
-    <input type="text" name ="address" placeholder="Địa chỉ ví nhận">
-    <button type="submit">Gửi</button>
+    <div class="withdraw-container">
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="withdraw-card shadow-lg">
+                        <div class="withdraw-header">
+                            <h2 class="text-center mb-0">
+                                <i class="bi bi-wallet2"></i> Rút Tiền
+                            </h2>
+                        </div>
+
+                        <div class="withdraw-body p-4">
+                            <div class="balance-info mb-4">
+                                <div class="info-label">Số dư hiện tại</div>
+                                <div class="balance-amount" id="currentBalance">
+                                    {{balance.balance}} MATIC
+                                </div>
+                            </div>
+
+                            <form id="withdrawForm" class="withdraw-form" method="POST" action="/withdraw">
+                                <div class="mb-4">
+                                    <label for="walletAddress" class="form-label">
+                                        <i class="bi bi-wallet"></i> Địa chỉ ví
+                                    </label>
+                                    <input
+                                        type="text"
+                                        class="form-control withdraw-input"
+                                        id="walletAddress"
+                                        name="address"
+                                        autocomplete="off"
+                                        required
+                                        pattern="^0x[a-fA-F0-9]{40}$"
+                                        title="Nhập địa chỉ ví Ethereum hợp lệ"
+                                    >
+                                    <small class="form-text mt-2 text-white">Địa chỉ ví nhận MATIC</small>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="amount" class="form-label">
+                                        <i class="bi bi-cash-coin"></i> Số tiền
+                                    </label>
+                                    <div class="input-group">
+                                        <input
+                                            type="number"
+                                            class="form-control withdraw-input"
+                                            id="amount"
+                                            name="amount"
+                                            min="0.001"
+                                            step="0.001"
+                                            required
+                                        >
+                                        <span class="input-group-text withdraw-addon">MATIC</span>
+                                    </div>
+                                    <small class="form-text mt-2 text-white">Số tiền tối thiểu: 0.001 MATIC</small>
+                                </div>
+
+                                <div class="d-grid gap-2 d-sm-flex justify-content-center">
+                                    <button type="submit" class="btn btn-withdraw btn-lg" id="submitBtn">
+                                        <i class="bi bi-check-circle"></i>
+                                        <span id="submitText">Xác nhận rút tiền</span>
+                                    </button>
+                                    <a href="/tasks" class="btn btn-secondary btn-lg">
+                                        <i class="bi bi-arrow-left"></i> Quay lại
+                                    </a>
+                                </div>
+
+                                <div id="statusMessage" class="alert d-none mt-3" role="alert" aria-live="polite">
+                                    <span id="statusText"></span>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="withdraw-footer p-4">
+                            <div class="info-box">
+                                <h6 class="mb-3">
+                                    <i class="bi bi-info-circle"></i> Lưu ý quan trọng
+                                </h6>
+                                <ul class="info-list">
+                                    <li>Kiểm tra kỹ địa chỉ ví trước khi rút tiền</li>
+                                    <li>Không thể hủy giao dịch sau khi xác nhận</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const withdrawForm = document.getElementById('withdrawForm')
+        const submitBtn = document.getElementById('submitBtn')
+        const submitText = document.getElementById('submitText')
+        const statusMessage = document.getElementById('statusMessage')
+        const statusText = document.getElementById('statusText')
+        const currentBalance = document.getElementById('currentBalance')
+
+        withdrawForm.addEventListener('submit', async (event) => {
+            event.preventDefault()
+            statusMessage.classList.add('d-none')
+            submitBtn.disabled = true
+            submitText.textContent = 'Đang xử lý...'
+
+            try {
+                const response = await fetch(withdrawForm.action, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        address: withdrawForm.elements.address.value.trim(),
+                        amount: withdrawForm.elements.amount.value
+                    })
+                })
+                const result = await response.json()
+
+                statusText.textContent = result.txHash
+                    ? `${result.message} Mã giao dịch: ${result.txHash}`
+                    : result.message || 'Không thể xử lý yêu cầu rút tiền.'
+                statusMessage.classList.remove('d-none', 'alert-info', 'alert-success', 'alert-danger')
+                statusMessage.classList.add(response.ok ? 'alert-success' : 'alert-danger')
+
+                if (response.ok && result.balance !== undefined) {
+                    currentBalance.textContent = `${result.balance} MATIC`
+                    withdrawForm.reset()
+                }
+            } catch (error) {
+                statusText.textContent = 'Không thể kết nối máy chủ. Vui lòng thử lại.'
+                statusMessage.classList.remove('d-none', 'alert-info', 'alert-success')
+                statusMessage.classList.add('alert-danger')
+            } finally {
+                submitBtn.disabled = false
+                submitText.textContent = 'Xác nhận rút tiền'
+            }
+        })
+    </script>
 </body>
 </html>

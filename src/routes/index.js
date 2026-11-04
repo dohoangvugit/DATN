@@ -7,6 +7,7 @@ const clientRoute = require('../routes/clientRoute')
 const managerHistoryTaskRoute = require('../routes/managerHistoryTaskRoute')
 const managerHistoryUserRoute = require('../routes/managerHistoryUserRoute')
 const advertiserRoute = require('../routes/advertiserRoute')
+const withdrawRoute = require('../routes/withdrawRoute')
 
 function route(app){
     
@@ -19,6 +20,7 @@ function route(app){
     app.use('/', managerHistoryTaskRoute)
     app.use('/', managerHistoryUserRoute)
     app.use('/', advertiserRoute)
+    app.use('/', withdrawRoute)
 }
 
 module.exports = route

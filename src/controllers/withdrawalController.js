@@ -4,8 +4,20 @@ const wallet = require('../config/wallet')
 const { ethers } = require('ethers')
 
 const withdrawalController = {
-    renderWithraw: (req, res) => {
-        res.render('withdraw')
+    renderWithdraw: async (req, res) => {
+        try {
+            const { data: balance, error } = await getInforModel.getBalance(req.user.id)
+
+            if (error || !balance) {
+                console.error('Lỗi truy xuất số dư khi mở trang rút tiền:', error)
+                return res.status(500).json({ message: 'Không thể tải thông tin số dư.' })
+            }
+
+            return res.render('withdraw', { balance })
+        } catch (error) {
+            console.error('Lỗi khi mở trang rút tiền:', error)
+            return res.status(500).json({ message: 'Lỗi máy chủ khi tải trang rút tiền.' })
+        }
     },
 
     postWithdraw: async (req, res) => {
@@ -42,7 +54,7 @@ const withdrawalController = {
             try {
                 const request = {
                     to: address,
-                    value: ethers.parseEther(amount.toString()) 
+                    value: ethers.parseEther(amount.toString())
                 }
 
                 const response = await wallet.sendTransaction(request)
