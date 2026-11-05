@@ -49,6 +49,46 @@ const taskModel = {
         }
         return {data, error}
     },
+
+    decreaseQuantity: async (taskId) => {
+        for (let attempt = 0; attempt < 5; attempt++) {
+            const { data: task, error: getError } = await supabase
+                .from('tasks')
+                .select('quantity')
+                .eq('id', taskId)
+                .single()
+
+            if (getError) {
+                return { data: null, error: getError }
+            }
+
+            const quantity = Number(task.quantity)
+            if (!Number.isFinite(quantity) || quantity <= 0) {
+                return { data: null, error: new Error('Nhiệm vụ đã hết lượt') }
+            }
+
+            const { data, error } = await supabase
+                .from('tasks')
+                .update({ quantity: quantity - 1 })
+                .eq('id', taskId)
+                .eq('quantity', task.quantity)
+                .select('quantity')
+                .maybeSingle()
+
+            if (error) {
+                return { data: null, error }
+            }
+
+            if (data) {
+                return { data, error: null }
+            }
+        }
+
+        return {
+            data: null,
+            error: new Error('Không thể cập nhật số lượt, vui lòng thử lại')
+        }
+    },
     
     update: async (taskId, taskData) => {
         const { data, error } = await supabase

@@ -16,6 +16,20 @@ const userModel = {
         return {data, error}
     },
 
+    getUserByAuthId: async (authId) => {
+        const { data, error } = await supabase
+            .from('users')
+            .select('id')
+            .eq('auth_user_id', authId)
+            .single()
+
+        if (error) {
+            console.error('không tìm thấy người dùng', error.message)
+        }
+
+        return {data, error}
+    },
+
     updateUserRoles: async (id, roles) => {
         const { data, error } =  await supabase
             .from('users')

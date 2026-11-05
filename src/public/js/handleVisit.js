@@ -12,31 +12,32 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 })
 
-async function startTask(taskId){
-    const res = await fetch('/start/:taskId', {
-        method: POST,
-        headers: { "Content-Type": "application/x-www-form-urlencoded"},
-        body: JSON.stringify({taskId})
+async function startTask(taskId) {
+    const res = await fetch(`/start/${taskId}`, {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ taskId })
     })
-
     return await res.json()
 }
 
-async function claimTask(taskId){
-    const res = await fetch('/claim/:taskId',{
-        method: POST,
-        headers: { "Content-Type": "application/x-www-form-urlencoded"},
-        body: JSON.stringify({taskId})
+async function claimTask(taskId) {
+    const res = await fetch(`/claim/${taskId}`, {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ taskId })
     })
-
     return await res.json()
 }
 
 function updateBalance(newBalance) {
     const balanceEl = document.getElementById('balance');
-    if (balanceEl) {
-        balanceEl.innerText = Number(newBalance).toFixed(8);
-    }
+    if (!balanceEl || newBalance === undefined || newBalance === null || newBalance === '') return
+
+    const balance = Number(newBalance)
+    if (!Number.isFinite(balance)) return
+
+    balanceEl.innerText = balance.toFixed(8)
 }
 
 function saveCompletedTask(taskId) {
@@ -59,55 +60,96 @@ function markAsCompleted(btn) {
     btn.disabled = true
 }
 
-async function handleClick(){
+async function handleClick(event) {
     const btn = event.currentTarget
     const taskId = btn.dataset.taskId
     const linkUrl = btn.dataset.linkUrl
-    const cooldown = btn.dataset.cooldown
+    const cooldown = Number(btn.dataset.cooldown) || 10
 
     btn.disabled = true
-    btn.innerText = `Giữ trang mở và không chuyển trang ${cooldown}`
 
-    try{
+    // 1. QUAN TRỌNG: Mở tab mới NGAY LẬP TỨC khi click để tránh bị trình duyệt chặn Pop-up
+    const newWindow = window.open(linkUrl, '_blank')
+    if (!newWindow) {
+        alert('Trình duyệt đã chặn mở tab mới! Vui lòng cho phép Pop-up cho trang web này.')
+        resetButton(btn, 'Visit')
+        return
+    }
+
+    let taskPageWasHidden = document.hidden
+    let leftTaskTab = false
+    const handleVisibilityChange = () => {
+        if (document.hidden) {
+            taskPageWasHidden = true
+        } else if (taskPageWasHidden) {
+            leftTaskTab = true
+        }
+    }
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
+    try {
         const start = await startTask(taskId)
 
-        if(start.error){
-            alert('start.error')
+        if (start.error || (start.message && start.message.includes('lỗi'))) {
+            newWindow.close()
+            alert(start.message || start.error)
             resetButton(btn, 'Visit')
             return
         }
 
-        window.open(linkUrl, '_blank')
-
-        let timeLeft = cooldown
-
-        const timer = setInterval(()=>{
-            if (timeLeft-- > 0){
-                btn.innerText = `Bạn đang trong quá trình xem quảng cáo`
-            }
-        }, 1000)
-
-        const claimResult = await claimTask(taskId)
-        clearInterval(timer)
-
-        if (claimResult.error) {
-            alert(claimResult.error)
-            resetButton(btn, 'Visit')
-            return;
+        if (leftTaskTab) {
+            throw new Error('Bạn đã rời khỏi trang PTC, nhiệm vụ bị hủy!')
         }
 
-        updateBalance(claimResult.newBalance)
+        let timeLeft = cooldown
+        btn.innerText = `Còn ${timeLeft}s (Đang xem)`
+
+        const countdownPromise = new Promise((resolve, reject) => {
+            const startTime = Date.now()
+            const timer = setInterval(() => {
+                if (newWindow.closed || leftTaskTab) {
+                    clearInterval(timer)
+                    return reject(new Error(
+                        newWindow.closed
+                            ? 'Tab quảng cáo đã đóng, nhiệm vụ bị hủy!'
+                            : 'Bạn đã quay lại trang PTC trước khi hết giờ, nhiệm vụ bị hủy!'
+                    ))
+                }
+
+                timeLeft = Math.ceil((cooldown * 1000 - (Date.now() - startTime)) / 1000)
+                if (timeLeft > 0) {
+                    btn.innerText = `Còn ${timeLeft}s (Đang xem)`
+                } else {
+                    clearInterval(timer)
+                    resolve()
+                }
+            }, 250)
+        })
+
+        await countdownPromise
+
+        btn.innerText = 'Đang nhận...'
+        const claimResult = await claimTask(taskId)
+
+        if (claimResult.error || (claimResult.message && claimResult.message.includes('thất bại'))) {
+            alert(claimResult.message || claimResult.error)
+            resetButton(btn, 'Visit')
+            return
+        }
+
+        updateBalance(claimResult.balance ?? claimResult.newBalance)
         markAsCompleted(btn)
-
         saveCompletedTask(taskId)
-    }catch(err){
-        console.error(err)
-        alert('Có lỗi xẩy ra')
-        resetButton(btn, 'Visit')
-    }
 
+    } catch (err) {
+        console.error(err)
+        alert(err.message || 'Có lỗi xảy ra')
+        resetButton(btn, 'Visit')
+    } finally {
+        document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
 }
 
-$('.visit-btn').forEach(btn => {
+$$('.visit-btn').forEach(btn => {
     btn.addEventListener('click', handleClick)
 })

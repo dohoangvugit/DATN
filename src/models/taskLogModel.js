@@ -21,17 +21,15 @@ const taskLogModel = {
         return {data, error}
     },
 
-    get10LatestLogbyUser: async (userId) => {
+    getLogsSince: async (userId, since) => {
         const { data, error } = await supabase
             .from('task_logs')
-            .select('*')
+            .select('task_id')
             .eq('user_id', userId)
-            .order('create_at', { ascending: false })
-            .limit(10)
-            
+            .gte('create_at', since)
+
         if (error) {
             console.error('lấy danh sách log thất bại', error.message)
-            // throw error
         }
 
         return {data, error}

@@ -13,7 +13,7 @@ const rewardModel = {
             return {updateData: null, updateError: error}
         }
 
-        const newBalance = data.balance  + reward
+        const newBalance = Number(data.balance) + Number(reward)
 
         const { data: updateData, error: updateError } = await supabase
             .from('users')
@@ -22,7 +22,7 @@ const rewardModel = {
             .select()
 
         // console.log('cộng phần thưởng thành công', data)
-        return {updateData, updateError}
+        return {updateData, newBalance, updateError}
     },
 
 }

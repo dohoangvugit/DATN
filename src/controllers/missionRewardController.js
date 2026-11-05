@@ -47,6 +47,14 @@ const missionRewardController = {
                 })
             }
 
+            const quantity = Number(task.quantity)
+            if (!Number.isFinite(quantity) || quantity <= 0) {
+                return res.status(400).json({
+                    message: 'Nhiệm vụ này đã hết lượt xem!',
+                    error: 'Task out of quantity'
+                })
+            }
+
             req.session.missions = req.session.missions || {}
             req.session.missions[taskId] = {
                 startTime: Date.now()
@@ -127,6 +135,16 @@ const missionRewardController = {
                 })
             }
 
+            const { error: errorDecrease } = await taskModel.decreaseQuantity(taskId)
+
+            if (errorDecrease) {
+                return res.status(400).json({
+                    message: 'Không thể cập nhật số lượng nhiệm vụ',
+                    error: errorDecrease.message
+                })
+            }
+            delete req.session.missions[taskId]
+
             const {data, error} = await taskLogModel.createLog(taskId, userId)
             
             if(error){
@@ -135,9 +153,7 @@ const missionRewardController = {
                     error: error.message
                 })
             }
-            delete req.session.missions[taskId]
-
-            const {updateData, updateError} = await rewardModel.addBalance(userId, task.reward)
+            const {updateData, newBalance, updateError} = await rewardModel.addBalance(userId, task.reward)
 
             if(updateError){
                 return res.status(400).json({
@@ -148,7 +164,8 @@ const missionRewardController = {
             console.log(authUserId, userId)
             return res.status(200).json({
                 message: 'Claim thành công',
-                task: task
+                task: task,
+                newBalance: newBalance
             })
 
         } catch(error){
