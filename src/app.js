@@ -36,7 +36,7 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use(express.json());
 const swaggerUi = require('swagger-ui-express');
-const swaggerSpec = require('./config/swagger');
+const swaggerSpec = require('./config/jsonAPI');
 
 // Hiển thị tài liệu API
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
