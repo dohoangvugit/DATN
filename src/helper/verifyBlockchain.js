@@ -14,9 +14,6 @@ async function verifyBlockchain({ tx_hash, amount }) {
         }
 
         const receipt = await provider.getTransactionReceipt(tx_hash)
-        if (!receipt) {
-            throw new Error('Giao dịch chưa được ghi nhận vào block')
-        }
 
         if (receipt.status !== 1) {
             throw new Error('Giao dịch không thành công trên blockchain')
