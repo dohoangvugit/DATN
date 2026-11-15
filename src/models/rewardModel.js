@@ -10,7 +10,7 @@ const rewardModel = {
             .single()
 
         if(error || !data){
-            return {updateData: null, updateError: error}
+            // throw error
         }
 
         const newBalance = Number(data.balance) + Number(reward)
